@@ -1,0 +1,5 @@
+<% title = item.completed ? content_tag(:del, item.title ) : item.title %>
+
+<td><%= link_to title, list_item_path(@list, item) %></td>
+<td><%= item.completed ? content_tag(:del, item.priority ) : item.priority %></td>
+<td><%= item.completed ? content_tag(:del, item.deadline ) : item.deadline %></td>

@@ -1,0 +1,35 @@
+<%= form_with(model: item, url: [@list, item]) do |form| %>
+  <% if item.errors.any? %>
+    <div style="color: red">
+      <h2><%= pluralize(item.errors.count, "error") %> prohibited this item from being saved:</h2>
+
+      <ul>
+        <% item.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+
+    <%= form.hidden_field :list_id, value: @list.id %>
+
+  <div>
+    <%= form.label :title, style: "display: block" %>
+    <%= form.text_field :title, size: 16, minlength:3,  maxlength: 250 ,required: true %>
+  </div>
+
+  <div>
+    <%= form.label :priority, style: "display: block" %>
+    <%= form.number_field :priority, min: 0, max: 4 %>
+  </div>
+
+  <div>
+    <%= form.label :deadline, style: "display: block" %>
+    <%= form.date_field :deadline, min: Date.today %>
+  </div>
+
+  <div>
+    <%= form.submit %>
+  </div>
+<% end %>

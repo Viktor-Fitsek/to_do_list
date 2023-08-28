@@ -1,0 +1,15 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  list: one
+  title: MyString
+  priority: 1
+  deadline: 2023-07-27
+  completed: false
+
+two:
+  list: two
+  title: MyString
+  priority: 1
+  deadline: 2023-07-27
+  completed: false
