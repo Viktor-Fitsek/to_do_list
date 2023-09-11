@@ -8,10 +8,47 @@ class ListsController < ApplicationController
 
   # GET /lists/1 or /lists/1.json
   def show
-    # @items = Item.where(list: @list)
-    @items = @list.items
-  end
+    @items = @list.items.order(completed: :asc, priority: :asc, deadline: :desc)
+    
+    #Number1
+    #if params[:completed] == 'true'
+    #  completed = true
+    #else
+    #  completed = [false, nil]
+    #end
 
+    #Number2
+    #completed = if params[:completed] == 'true'
+    #  true
+    #else
+    #  [false, nil]
+    #end
+    
+    #Number3
+    #if params[:completed]
+    #  completed = params[:completed] == 'true' ? true : [false, nil]
+    #  @items = @items.where(completed: completed)
+    #end
+
+    @items = if params[:completed] == 'true'
+      @items.where(completed: true)
+    elsif params[:completed] == 'false'
+      @items.where(completed: [false, nil])
+    else
+      @items
+    end
+
+    #page = if params[:page] == nil
+    #  1
+    #else
+    #  params[:page].to_i
+    #end
+    page     = (params[:page] || 1).to_i
+    per_page = (params[:per_page] || 10).to_i
+    @items = @items.offset((page-1)*per_page).limit(per_page)
+    
+    
+  end
   # GET /lists/new
   def new
     @list = List.new
