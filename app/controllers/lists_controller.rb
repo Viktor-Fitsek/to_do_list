@@ -43,11 +43,11 @@ class ListsController < ApplicationController
     #else
     #  params[:page].to_i
     #end
-    page     = (params[:page] || 1).to_i
-    per_page = (params[:per_page] || 10).to_i
-    @items = @items.offset((page-1)*per_page).limit(per_page)
-    
-    
+    @page    = [params[:page].to_i, 1].max
+    # byebug
+    @per_page = (params[:per_page] || 10).to_i
+    @number_of_pages = (@items.size/@per_page.to_f).ceil
+    @items = @items.offset((@page-1)*@per_page).limit(@per_page)
   end
   # GET /lists/new
   def new
