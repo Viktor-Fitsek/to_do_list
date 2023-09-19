@@ -4,9 +4,15 @@
 
 <table>
   <tr>
-    <td>Title</td>
-    <td>Priority</td>
-    <td>Deadline</td>
+    <td>
+      <%= link_to "Title", list_path(@list, {sortirovka: 'title', napr: @order == 'title' && @dir == 'asc' ? 'desc' : 'asc', completed: @completed}) %>
+    </td>
+    <td>
+      <%= link_to "Priority", list_path(@list, {sortirovka: 'priority', napr: @order == 'priority' && @dir == 'asc' ? 'desc' : 'asc', completed: @completed}) %>
+    </td>
+    <td>
+      <%= link_to "Deadline", list_path(@list, {sortirovka: 'deadline', napr: @order == 'deadline' && @dir == 'asc' ? 'desc' : 'asc',completed: @completed}) %>
+    </td>
   </tr>
 
   <% @items.each do |item| %>
@@ -25,13 +31,13 @@
   <%= button_to "Destroy this list", list_path(@list), method: :delete %>
   <div>
     <% if @page > 1 %>
-      <%= link_to "Previous page", list_path(@list, {page: @page-1})%>
+      <%= link_to "Previous page", list_path(@list, {completed: @completed, page: @page-1, per_page: @per_page, sortirovka: @order, napr: @dir})%>
     <% end %> 
-    <% if @number_of_pages != @page %>
-      <%= link_to "Next page", list_path(@list, {page: @page+1})%>
+    <% if @number_of_pages > @page %>
+      <%= link_to "Next page", list_path(@list, {completed: @completed, page: @page+1, per_page: @per_page, sortirovka: @order, napr: @dir})%>
     <% end %>
   </div>
-  <%= link_to "Completed", list_path(@list, {completed: true, page: @page})%>
-  <%= link_to "Incompleted", list_path(@list, {completed: false, page: @page})%>
-  <%= link_to "All", list_path(@list) %>
+  <%= link_to "Completed", list_path(@list, {completed: true, per_page: @per_page, sortirovka: @order, napr: @dir})%>
+  <%= link_to "Incompleted", list_path(@list, {completed: false, per_page: @per_page, sortirovka: @order, napr: @dir})%>
+  <%= link_to "All", list_path(@list, per_page: @per_page, sortirovka: @order, napr: @dir) %>
 </div>

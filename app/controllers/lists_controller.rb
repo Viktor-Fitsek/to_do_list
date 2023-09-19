@@ -8,7 +8,16 @@ class ListsController < ApplicationController
 
   # GET /lists/1 or /lists/1.json
   def show
-    @items = @list.items.order(completed: :asc, priority: :asc, deadline: :desc)
+    @order = params[:sortirovka] || 'title'
+    @dir = params[:napr] || 'asc'
+    #SORT/lists
+    @items = @list.items
+    @items = @items.order(Item.sanitize_sql_for_order("#{@order} #{@dir}"))
+    
+
+    
+    
+    #  @items = @list.items.order(titel: :asc, completed: :asc, priority: :asc, deadline: :desc)
     
     #Number1
     #if params[:completed] == 'true'
@@ -31,8 +40,10 @@ class ListsController < ApplicationController
     #end
 
     @items = if params[:completed] == 'true'
+      @completed = true
       @items.where(completed: true)
     elsif params[:completed] == 'false'
+      @completed = false
       @items.where(completed: [false, nil])
     else
       @items
