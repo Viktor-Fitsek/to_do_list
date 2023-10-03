@@ -1,6 +1,7 @@
 class ListsController < ApplicationController
   before_action :set_list, only: %i[ show edit update destroy ]
-
+  
+  include Pagy::Backend
   # GET /lists or /lists.json
   def index
     @lists = List.all
@@ -13,9 +14,6 @@ class ListsController < ApplicationController
     #SORT/lists
     @items = @list.items
     @items = @items.order(Item.sanitize_sql_for_order("#{@order} #{@dir}"))
-    
-
-    
     
     #  @items = @list.items.order(titel: :asc, completed: :asc, priority: :asc, deadline: :desc)
     
@@ -48,17 +46,19 @@ class ListsController < ApplicationController
     else
       @items
     end
-
+    #Pagination
     #page = if params[:page] == nil
     #  1
     #else
     #  params[:page].to_i
     #end
-    @page    = [params[:page].to_i, 1].max
-    # byebug
+    #@page    = [params[:page].to_i, 1].max
+    ## byebug 
     @per_page = (params[:per_page] || 10).to_i
-    @number_of_pages = (@items.size/@per_page.to_f).ceil
-    @items = @items.offset((@page-1)*@per_page).limit(@per_page)
+    #@number_of_pages = (@items.size/@per_page.to_f).ceil
+    #@items = @items.offset((@page-1)*@per_page).limit(@per_page)
+
+    @pagy, @items = pagy(@items, items: @per_page)
   end
   # GET /lists/new
   def new
