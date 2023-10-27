@@ -22,7 +22,7 @@ class ItemsController < ApplicationController
 
   # POST /items or /items.json
   def create
-    @item = Item.new(item_params)
+    @item = @list.items.new(item_params)
 
     respond_to do |format|
       if @item.save
@@ -53,7 +53,7 @@ class ItemsController < ApplicationController
     @item.destroy
 
     respond_to do |format|
-      format.html { redirect_to list_items_url(@list), notice: "Item was successfully destroyed." }
+      format.html { redirect_to list_path(@list), notice: "Item was successfully destroyed." }
       format.json { head :no_content }
     end
   end
@@ -73,12 +73,12 @@ class ItemsController < ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_item
-      @item = Item.find(params[:id])
+      @item = @list.items.find(params[:id])
     end
 
     # Use callbacks to share common setup or constraints between actions.
     def set_list
-      @list = List.find(params[:list_id])
+      @list = current_user.lists.find(params[:list_id])
     end
 
     # Only allow a list of trusted parameters through.
